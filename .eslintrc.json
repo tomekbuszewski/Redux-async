@@ -25,7 +25,7 @@
     "eqeqeq": "error",
     "indent": [
       "warn",
-      4,
+      2,
       {
         "SwitchCase": 1
       }

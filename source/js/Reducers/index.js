@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import Transitions from './Transitions'
 
 const reducers = combineReducers({
-    Transitions
+  Transitions
 });
 
 export default reducers;

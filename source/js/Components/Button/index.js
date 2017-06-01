@@ -1,5 +1,5 @@
 import React from 'react';
 
-const Button = ({ variant = '' }) => <button className={`button is-small ${variant}`}>A</button>;
+const Button = ({ variant = '', action = null, children }) => <button onClick={action} className={`button is-small ${variant}`}>{children}</button>;
 
 export default Button;
