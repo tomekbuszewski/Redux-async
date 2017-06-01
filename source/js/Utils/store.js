@@ -23,7 +23,7 @@ const middleware = [ thunk, axiosMiddleware(client) ];
 let store = createStore(reducers, initial, composeEnhancers(applyMiddleware(...middleware)));
 
 if (typeof window === 'undefined') {
-    store = createStore(reducers);
+  store = createStore(reducers);
 }
 
 export default store;
