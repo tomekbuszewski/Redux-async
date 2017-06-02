@@ -43,8 +43,9 @@ export const checkForFetched = (database, item) => {
 export const resolvePost = (database, url, answers) => {
   const FETCHED = database.Content.fetched;
   const POSTS = database.Content.content;
+  console.log(POSTS);
   const checkForContent = post => {
-    return post.content.length > 0;
+    return post.content !== null;
   };
 
   if (checkForFetched(FETCHED, url)) {

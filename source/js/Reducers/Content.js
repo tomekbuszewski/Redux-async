@@ -1,4 +1,4 @@
-import { INSERT_POST, INSERT_CONTENT, BUMP_PAGE } from '../Actions/Content';
+import { INSERT_POST, INSERT_CONTENT, BUMP_PAGE, FETCH_COLLECTION } from '../Actions/Content';
 
 const defaultState = {
   currentPage: 0,
@@ -12,10 +12,12 @@ const reducer = (state = defaultState, action) => {
     case INSERT_POST:
       return { ...state, content: [ ...state.content, action.payload ], fetched: [ ...state.fetched, action.url ] };
     case INSERT_CONTENT:
-      const newState = [...state];
-      newState[action.payload.id] = action.payload.data;
+      const newState = {...state};
+      newState.content[action.payload.id].content = action.payload.data;
 
       return newState;
+    case `${FETCH_COLLECTION}_SUCCESS`:
+      return { ...state, fetched: [ ...state.fetched, action.meta.previousAction.payload.request ]};
     case BUMP_PAGE:
       return { ...state, currentPage: state.nextPage, nextPage: ++state.nextPage };
     default:

@@ -68,6 +68,7 @@ export const fetch = (url, type) => dispatch => {
         });
         break;
       default:
+        dispatch({ type: RESOLVE_COLLECTION });
         dispatch({ type: END_TRANSITION });
         break;
     }
@@ -88,8 +89,9 @@ export const fetch = (url, type) => dispatch => {
         dispatch({
           type: FETCH_CONTENT,
           payload: { request: { url } }
-        }).then(() => {
-          dispatch({ type: INSERT_CONTENT, payload: { data: r.data.content, id: getIndex(DATABASE.Content.content, url) } });
+        }).then(r => {
+          console.log(r)
+          dispatch({ type: INSERT_CONTENT, payload: { data: r.payload.data.content, id: getIndex(DATABASE.Content.content, url) } });
           dispatch({ type: END_TRANSITION });
         });
         break;
