@@ -1,47 +1,40 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Header from '../../Containers/Header';
 import Section from '../../Containers/Section';
 
 import PostList from '../PostList';
+import Post from '../../Containers/Post';
 
 import PaginationButton from '../Button/PaginationButton'
 
-import { toggle } from '../../Actions/Transitions';
-import { fetch } from '../../Actions/Content';
+const Matcher = ({ match }) => {
+  const { params } = match;
+  const { any, slug } = params;
+  const post = !(isNaN(any) && isNaN(slug));
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-  }
+  return post ? <Post url={match.url} /> : <div />
+};
 
-  componentDidMount() {
-    this.props.fetch('/', 'collection');
-  }
-
-  render() {
-    return (
-      <div>
-        <Header variant={this.props.loading.loaded ? 'is-primary' : 'is-dark'} style="variant">Title</Header>
-        <Section>
-          <PostList/>
-        </Section>
-        <Section>
-          <PaginationButton />
-        </Section>
-      </div>
-    );
-  }
-}
+const App = ({ loading }) => (
+  <Router>
+    <div>
+      <Header variant={loading.loaded ? 'is-primary' : 'is-dark'} style="variant">Title</Header>
+      <Section>
+        <Route exact path="/" render={() => <PostList url="/" />} />
+        <Route path="/:any/:slug?/:inner?/:even?/:deeper?" component={Matcher} />
+      </Section>
+      <Section>
+        <PaginationButton />
+      </Section>
+    </div>
+  </Router>
+);
 
 const mapStateToProps = ({ Transitions }) => {
   return { loading: Transitions }
 };
 
-const mapDispatchToProps = {
-  toggle: () => toggle(),
-  fetch:  (url, type) => fetch(url, type)
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

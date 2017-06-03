@@ -35,9 +35,10 @@ const matcher = type => {
  * Action for fetching single post
  * @param {string} url - Url for post
  * @param {string} type [collection] - Type for fetching
+ * @param {function|null} cb - Function to be executed after transition, if any
  * @returns {undefined}
  */
-export const fetch = (url, type) => dispatch => {
+export const fetch = (url, type, cb) => dispatch => {
   const TYPE = matcher(type);
   const DATABASE = store.getState();
 
@@ -84,7 +85,7 @@ export const fetch = (url, type) => dispatch => {
           payload: { request: { url } }
         }).then(r => {
           dispatch({ type: INSERT_POST, payload: r.payload.data, url });
-          dispatch({ type: END_TRANSITION })
+          dispatch({ type: END_TRANSITION });
         });
         break;
       case FETCH_CONTENT:
@@ -93,8 +94,14 @@ export const fetch = (url, type) => dispatch => {
           payload: { request: { url } }
         }).then(r => {
           dispatch({ type: INSERT_CONTENT, payload: { data: r.payload.data.content, id: getIndex(DATABASE.Content.content, url) } });
+          if (typeof cb === 'function') cb();
           dispatch({ type: END_TRANSITION });
         });
+        break;
+      case ALREADY_IN_DATABASE:
+        dispatch({ type: ALREADY_IN_DATABASE });
+        if (typeof cb === 'function') cb();
+        dispatch({ type: END_TRANSITION });
         break;
       default:
         dispatch({ type: RESOLVE_POST });
