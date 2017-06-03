@@ -18,7 +18,7 @@ export const getPost = (database, field, query) => {
  * @returns {number|Number} - index
  */
 export const getIndex = (database, url) => {
-  const POST = getPost(database, url);
+  const POST = getPost(database, 'url', url);
 
   return database.indexOf(POST);
 };
@@ -43,7 +43,6 @@ export const checkForFetched = (database, item) => {
 export const resolvePost = (database, url, answers) => {
   const FETCHED = database.Content.fetched;
   const POSTS = database.Content.content;
-  console.log(POSTS);
   const checkForContent = post => {
     return post.content !== null;
   };

@@ -49,7 +49,7 @@ export const fetch = (url, type) => dispatch => {
 
     switch (RESOLVE_COLLECTION) {
       case FETCH_COLLECTION:
-        dispatch({ type: FETCH_COLLECTION, payload: { request: url } }).then(r => {
+        dispatch({ type: FETCH_COLLECTION, payload: { request: { url } } }).then(r => {
           const POSTS = r.payload.data.posts;
 
           for (const POST of POSTS) {
@@ -57,10 +57,12 @@ export const fetch = (url, type) => dispatch => {
 
             if (typeof ISIN === 'undefined') {
               dispatch({ type: INSERT_POST, payload: POST, url: POST.url });
+            } else {
+              dispatch({ type: ALREADY_IN_DATABASE });
             }
           }
 
-          if (url === '/' || url.indexOf('paged') > -1) {
+          if (url === '/' || url.indexOf('/page/') > -1) {
             dispatch({ type: BUMP_PAGE });
           }
 
@@ -90,7 +92,6 @@ export const fetch = (url, type) => dispatch => {
           type: FETCH_CONTENT,
           payload: { request: { url } }
         }).then(r => {
-          console.log(r)
           dispatch({ type: INSERT_CONTENT, payload: { data: r.payload.data.content, id: getIndex(DATABASE.Content.content, url) } });
           dispatch({ type: END_TRANSITION });
         });
