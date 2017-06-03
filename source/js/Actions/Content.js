@@ -81,7 +81,6 @@ export const fetch = (url, type, cb = null) => dispatch => {
           break;
         default:
           dispatch({ type: RESOLVE_COLLECTION });
-          console.log(RESOLVE_COLLECTION);
           dispatch({ type: END_TRANSITION });
           break;
       }
