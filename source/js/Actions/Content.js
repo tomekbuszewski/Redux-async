@@ -38,74 +38,92 @@ const matcher = type => {
  * @param {function|null} cb - Function to be executed after transition, if any
  * @returns {undefined}
  */
-export const fetch = (url, type, cb) => dispatch => {
+export const fetch = (url, type, cb = null) => dispatch => {
   const TYPE = matcher(type);
   const DATABASE = store.getState();
 
   // First we dispatch starting transition
   dispatch({ type: START_TRANSITION });
 
-  if (TYPE === FETCH_COLLECTION) {
-    const RESOLVE_COLLECTION = resolveCollection(DATABASE, url, { indb: ALREADY_IN_DATABASE, fetch: FETCH_COLLECTION });
+  setTimeout(() => {
+    if (TYPE === FETCH_COLLECTION) {
+      const RESOLVE_COLLECTION = resolveCollection(DATABASE, url, {
+        indb:  ALREADY_IN_DATABASE,
+        fetch: FETCH_COLLECTION
+      });
 
-    switch (RESOLVE_COLLECTION) {
-      case FETCH_COLLECTION:
-        dispatch({ type: FETCH_COLLECTION, payload: { request: { url } } }).then(r => {
-          const POSTS = r.payload.data.posts;
+      switch (RESOLVE_COLLECTION) {
+        case FETCH_COLLECTION:
+          dispatch({ type: FETCH_COLLECTION, payload: { request: { url } } }).then(r => {
+            const POSTS = r.payload.data.posts;
 
-          for (const POST of POSTS) {
-            const ISIN = getPost(DATABASE.Content.content, 'url', POST.url);
+            for (const POST of POSTS) {
+              const ISIN = getPost(DATABASE.Content.content, 'url', POST.url);
 
-            if (typeof ISIN === 'undefined') {
-              dispatch({ type: INSERT_POST, payload: POST, url: POST.url });
-            } else {
-              dispatch({ type: ALREADY_IN_DATABASE });
+              if (typeof ISIN === 'undefined') {
+                dispatch({ type: INSERT_POST, payload: POST, url: POST.url });
+              } else {
+                dispatch({ type: ALREADY_IN_DATABASE });
+              }
             }
-          }
 
-          if (url === '/' || url.indexOf('/page/') > -1) {
-            dispatch({ type: BUMP_PAGE });
-          }
+            if (url === '/' || url.indexOf('/page/') > -1) {
+              dispatch({ type: BUMP_PAGE });
+            }
 
-          dispatch({ type: END_TRANSITION });
-        });
-        break;
-      default:
-        dispatch({ type: RESOLVE_COLLECTION });
-        dispatch({ type: END_TRANSITION });
-        break;
-    }
-  } else {
-    const RESOLVE_POST = resolvePost(DATABASE, url, { indb: ALREADY_IN_DATABASE, fetchpost: FETCH_POST, fetchcontent: FETCH_CONTENT });
-
-    switch (RESOLVE_POST) {
-      case FETCH_POST:
-        dispatch({
-          type: FETCH_POST,
-          payload: { request: { url } }
-        }).then(r => {
-          dispatch({ type: INSERT_POST, payload: r.payload.data, url });
-          dispatch({ type: END_TRANSITION });
-        });
-        break;
-      case FETCH_CONTENT:
-        dispatch({
-          type: FETCH_CONTENT,
-          payload: { request: { url } }
-        }).then(r => {
-          dispatch({ type: INSERT_CONTENT, payload: { data: r.payload.data.content, id: getIndex(DATABASE.Content.content, url) } });
+            dispatch({ type: END_TRANSITION });
+          });
+          break;
+        case ALREADY_IN_DATABASE:
+          dispatch({ type: ALREADY_IN_DATABASE });
           if (typeof cb === 'function') cb();
+          setTimeout(() => { dispatch({ type: END_TRANSITION }) }, 250);
+          break;
+        default:
+          dispatch({ type: RESOLVE_COLLECTION });
+          console.log(RESOLVE_COLLECTION);
           dispatch({ type: END_TRANSITION });
-        });
-        break;
-      case ALREADY_IN_DATABASE:
-        dispatch({ type: ALREADY_IN_DATABASE });
-        if (typeof cb === 'function') cb();
-        dispatch({ type: END_TRANSITION });
-        break;
-      default:
-        dispatch({ type: RESOLVE_POST });
-        dispatch({ type: END_TRANSITION });
+          break;
+      }
+    } else {
+      const RESOLVE_POST = resolvePost(DATABASE, url, {
+        indb:         ALREADY_IN_DATABASE,
+        fetchpost:    FETCH_POST,
+        fetchcontent: FETCH_CONTENT
+      });
+
+      switch (RESOLVE_POST) {
+        case FETCH_POST:
+          dispatch({
+            type:    FETCH_POST,
+            payload: { request: { url } }
+          }).then(r => {
+            dispatch({ type: INSERT_POST, payload: r.payload.data, url });
+            setTimeout(() => { dispatch({ type: END_TRANSITION }) }, 250);
+          });
+          break;
+        case FETCH_CONTENT:
+          dispatch({
+            type:    FETCH_CONTENT,
+            payload: { request: { url } }
+          }).then(r => {
+            dispatch({
+              type:    INSERT_CONTENT,
+              payload: { data: r.payload.data.content, id: getIndex(DATABASE.Content.content, url) }
+            });
+            if (typeof cb === 'function') cb();
+            setTimeout(() => { dispatch({ type: END_TRANSITION }) }, 250);
+          });
+          break;
+        case ALREADY_IN_DATABASE:
+          dispatch({ type: ALREADY_IN_DATABASE });
+          if (typeof cb === 'function') cb();
+          setTimeout(() => { dispatch({ type: END_TRANSITION }) }, 250);
+          break;
+        default:
+          dispatch({ type: RESOLVE_POST });
+          setTimeout(() => { dispatch({ type: END_TRANSITION }) }, 250);
+      }
     }
-  }
+  }, 250)
 };

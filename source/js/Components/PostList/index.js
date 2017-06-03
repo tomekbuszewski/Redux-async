@@ -11,7 +11,9 @@ class PostList extends Component {
   }
 
   componentDidMount() {
-    this.props.fetch(this.props.url, 'collection');
+    if (this.props.fetched.indexOf(this.props.url) === -1) {
+      this.props.fetch(this.props.url, 'collection');
+    }
   }
 
   render() {
@@ -21,6 +23,7 @@ class PostList extends Component {
 
 const mapStateToProps = ({ Content }) => {
   return {
+    fetched: Content.fetched,
     posts: Content.content
   }
 };

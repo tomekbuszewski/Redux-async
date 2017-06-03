@@ -1,1 +1,11 @@
 @import '~bulma/bulma.sass';
+
+.page {
+  position: relative;
+  transition: 250ms opacity linear, 250ms transform linear;
+
+  &.loading {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+}

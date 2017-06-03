@@ -17,7 +17,7 @@ const reducer = (state = defaultState, action) => {
 
       return newState;
     case `${FETCH_COLLECTION}_SUCCESS`:
-      return { ...state, fetched: [ ...state.fetched, action.meta.previousAction.payload.request ]};
+      return { ...state, fetched: [ ...state.fetched, action.meta.previousAction.payload.request.url ]};
     case BUMP_PAGE:
       return { ...state, currentPage: state.nextPage, nextPage: ++state.nextPage };
     default:
