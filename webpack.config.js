@@ -34,7 +34,11 @@ module.exports = {
       { // JavaScript
         test: /\.js$/,
         use: [
-          { loader: 'babel-loader' },
+          { loader: 'babel-loader',
+            options: {
+              "presets": [["es2015", { modules:false }], "stage-0", "react" ]
+            }
+          },
           { loader: 'eslint-loader'}
         ]
       }
