@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 
 import expect from '../source/js/Services/Expect';
+import cache from './cache';
 
 import { API_URL } from '../source/config';
 import { makeStore } from '../source/js/Utils/store';
@@ -56,7 +57,7 @@ const buildInitialState = (url, data) => {
 
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
-app.get('/*', (req, res) => {
+app.get('/*', cache(10), (req, res) => {
   const ENTRY_POINT = req.url;
   const URL = `${API_URL}${ENTRY_POINT}`;
 
