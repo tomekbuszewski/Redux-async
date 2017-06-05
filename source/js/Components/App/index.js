@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 
 import Header from '../../Containers/Header';
 import Section from '../../Containers/Section';
@@ -37,4 +37,4 @@ const mapStateToProps = ({ Transitions }) => {
   return { loaded: Transitions }
 };
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));

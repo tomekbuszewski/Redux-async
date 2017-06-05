@@ -20,7 +20,7 @@ let store = createStore(reducers, initial, composeEnhancers(applyMiddleware(...m
 
 if (typeof window === 'undefined') {
   store = createStore(reducers);
-};
+}
 
 export const makeStore = initial => createStore(reducers, initial);
 export default store;
