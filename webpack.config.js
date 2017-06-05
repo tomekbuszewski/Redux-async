@@ -25,7 +25,7 @@ module.exports = {
         test: /\.scss$/,
         use: extractScss.extract({
           use: [
-            { loader: 'css-loader', options: { sourceMap: true } },
+            { loader: 'css-loader', options: { sourceMap: true, minimize: true } },
             { loader: 'sass-loader', options: { sourceMap: true, includePaths: ['./source/sass'] }},
             { loader: 'resolve-url-loader' }
           ],

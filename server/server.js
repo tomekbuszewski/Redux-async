@@ -5,6 +5,7 @@ import axios from 'axios';
 import serialize from 'serialize-javascript';
 import path from 'path';
 import compression from 'compression';
+import fs from 'fs';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 
@@ -20,7 +21,9 @@ const PORT = 1199;
 const COLLECTION = 'COLLECTION';
 const SINGLE = 'SINGLE';
 
-const build = (reactBuild = null, data) => `<!doctype html><html><head><link rel="stylesheet" href="/public/main.css"></head><body><div id="root">${reactBuild}</div><script src="/public/index.js" defer></script><script>__INITIAL__ = ${serialize(data, { isJSON: true })}</script></body></html>`;
+const CSS = fs.readFileSync(path.resolve(__dirname, '..', 'public', 'main.css'), 'utf-8');
+
+const build = (reactBuild = null, data, css) => `<!doctype html><html><head><style>${css}</style></head><body><div id="root">${reactBuild}</div><script src="/public/index.js" defer></script><script>__INITIAL__ = ${serialize(data, { isJSON: true })}</script></body></html>`;
 const resolveType = (data) => {
   if (expect.objectToHave(data, 'posts')) {
     return COLLECTION;
@@ -68,7 +71,7 @@ app.get('/*', cache(10), (req, res) => {
     const STORE = makeStore(INITIAL);
     const BUILD = renderToString(<StaticRouter location={ENTRY_POINT} context={{}}><Provider store={STORE}><App /></Provider></StaticRouter>);
 
-    res.send(build(BUILD, STORE.getState()));
+    res.send(build(BUILD, STORE.getState(), CSS));
   })
 });
 
