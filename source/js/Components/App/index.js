@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import Header from '../../Containers/Header';
 import Section from '../../Containers/Section';
@@ -20,7 +20,7 @@ const Matcher = ({ match }) => {
   return post ? <Post url={match.url} /> : <div />
 };
 
-const App = ({ loaded }) => <Router>
+const App = ({ loaded }) => (
   <div className={`page ${loaded.loaded ? 'loaded' : 'loading'}`}>
     <Header>Title, <Link href="/">Index</Link></Header>
     <Section>
@@ -31,7 +31,7 @@ const App = ({ loaded }) => <Router>
       <PaginationButton />
     </Section>
   </div>
-</Router>;
+);
 
 const mapStateToProps = ({ Transitions }) => {
   return { loaded: Transitions }
