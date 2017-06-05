@@ -5,8 +5,9 @@ var StyleLintPlugin = require('stylelint-webpack-plugin');
 
 var extractScss = new ExtractTextPlugin({ filename: '[name].css' });
 var browserSync = new BrowserSyncPlugin({
-  server: {
-    baseDir: ['public']
+  proxy: {
+    target: "http://localhost:1199",
+    ws: true
   }
 });
 var stylelint = new StyleLintPlugin({ context: './source' });

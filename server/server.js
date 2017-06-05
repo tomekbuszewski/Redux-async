@@ -4,6 +4,7 @@ import express from 'express';
 import axios from 'axios';
 import serialize from 'serialize-javascript';
 import path from 'path';
+import compression from 'compression';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 
@@ -19,7 +20,7 @@ const PORT = 1199;
 const COLLECTION = 'COLLECTION';
 const SINGLE = 'SINGLE';
 
-const build = (reactBuild = null, data) => `<!doctype html><html><head><script src="/public/index.js" defer></script><link rel="stylesheet" href="/public/main.css"></head><body><div id="root">${reactBuild}</div><script>__INITIAL__ = ${serialize(data, { isJSON: true })}</script></body></html>`;
+const build = (reactBuild = null, data) => `<!doctype html><html><head><link rel="stylesheet" href="/public/main.css"></head><body><div id="root">${reactBuild}</div><script src="/public/index.js" defer></script><script>__INITIAL__ = ${serialize(data, { isJSON: true })}</script></body></html>`;
 const resolveType = (data) => {
   if (expect.objectToHave(data, 'posts')) {
     return COLLECTION;
@@ -55,6 +56,7 @@ const buildInitialState = (url, data) => {
   }
 };
 
+app.use(compression());
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/*', cache(10), (req, res) => {
