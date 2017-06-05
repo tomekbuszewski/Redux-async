@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server';
 import express from 'express';
 import axios from 'axios';
 import serialize from 'serialize-javascript';
-// import { createStore } from 'redux';
+import path from 'path';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 
@@ -18,7 +18,7 @@ const PORT = 1199;
 const COLLECTION = 'COLLECTION';
 const SINGLE = 'SINGLE';
 
-const build = (reactBuild = null, data) => `<!doctype html><html><head></head><body><div id="#root">${reactBuild}</div><script>__INITIAL__ = ${serialize(data, { isJSON: true })}</script></body></html>`;
+const build = (reactBuild = null, data) => `<!doctype html><html><head><script src="/public/index.js" defer></script><link rel="stylesheet" href="/public/main.css"></head><body><div id="root">${reactBuild}</div><script>__INITIAL__ = ${serialize(data, { isJSON: true })}</script></body></html>`;
 const resolveType = (data) => {
   if (expect.objectToHave(data, 'posts')) {
     return COLLECTION;
@@ -34,6 +34,13 @@ const createData = (data) => {
   }
 };
 const buildInitialState = (url, data) => {
+  const fetched = ['/'];
+  const content = createData(data);
+
+  for (const item of content) {
+    fetched.push(item.url);
+  }
+
   return {
     Transitions: {
       loaded: true
@@ -41,11 +48,13 @@ const buildInitialState = (url, data) => {
     Content: {
       currentPage: 1,
       nextPage: 2,
-      content: createData(data),
-      fetched: [url]
+      content,
+      fetched
     }
   }
 };
+
+app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/*', (req, res) => {
   const ENTRY_POINT = req.url;
