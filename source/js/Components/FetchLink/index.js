@@ -4,11 +4,11 @@ import { withRouter } from 'react-router-dom';
 
 import { fetch } from '../../Actions/Content';
 
-const FetchLink = ({ type = 'collection', href, fetch, children, history }) => {
+const FetchLink = ({ type = 'collection', href, fetch, children, history, classname }) => {
   const go = () => { history.push(href) };
 
   return (
-    <a href={href || ''} type={type} onClick={e => {
+    <a className={classname} href={href || ''} type={type} onClick={e => {
       e.preventDefault();
       fetch(href, type, go)
     }}>{children}</a>

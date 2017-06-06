@@ -71,6 +71,7 @@ export const fetch = (url, type, cb = null) => dispatch => {
               dispatch({ type: BUMP_PAGE });
             }
 
+            if (typeof cb === 'function') cb();
             dispatch({ type: END_TRANSITION });
           });
           break;
