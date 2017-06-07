@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { getPost } from '../../Services/Database';
 
-const Post = (props) => {
+export const Post = (props) => {
   const { url, posts } = props;
   const post = getPost(posts, 'url', url);
 
