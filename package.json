@@ -55,6 +55,7 @@
     "watch": "webpack -w",
     "build": "webpack",
     "prod": "webpack -p",
-    "test": "jest"
+    "test": "jest --verbose",
+    "test-watch": "jest --watch"
   }
 }
