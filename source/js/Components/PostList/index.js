@@ -16,8 +16,6 @@ class PostList extends Component {
     this.state = {
       filter: getLastPart(this.props.url)
     };
-
-    this.content = orderByCriteria(filterByCriteria(this.props.posts, 'categories', 'slug', this.state.filter), 'date');
   }
 
   componentDidMount() {
@@ -32,8 +30,7 @@ class PostList extends Component {
         <meta charSet="utf-8" />
         <title>Strona główna</title>
       </Helmet>
-      {this.content.map(i => <Card key={i.id} link={i.url} title={i.title} />)}
-      {/*{this.props.posts.filter(post => this.state.filter === '' ? post : findObject(0, post.categories, 'slug', this.state.filter)).sort((a, b) => b.date - a.date).map(i => <Card key={i.id} link={i.url} title={i.title} />)}*/}
+      {orderByCriteria(filterByCriteria(this.props.posts, 'categories', 'slug', this.state.filter), 'date').map(i => <Card key={i.id} link={i.url} title={i.title} />)}
       </div>;
   }
 }

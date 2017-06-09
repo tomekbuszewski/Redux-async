@@ -24,7 +24,7 @@ const SINGLE = 'SINGLE';
 
 const CSS = fs.readFileSync(path.resolve(__dirname, '..', 'public', 'main.css'), 'utf-8');
 
-const build = (helmet, reactBuild = null, data, css = CSS) => `<!doctype html><html><head>${helmet.title.toString()}${helmet.meta.toString()}<style>${css}</style></head><body><div id="root">${reactBuild}</div><script src="/public/index.js" defer></script><script>__INITIAL__ = ${serialize(data, { isJSON: true })}</script></body></html>`;
+const build = (helmet, reactBuild = null, data, css = CSS) => `<!doctype html><html><head>${helmet.title.toString()}${helmet.meta.toString()}<link rel="stylesheet" href="/public/main.css" /></head><body><div id="root">${reactBuild}</div><script src="/public/index.js" defer></script><script>__INITIAL__ = ${serialize(data, { isJSON: true })}</script></body></html>`;
 const resolveType = (data) => {
   if (expect.objectToHave(data, 'posts')) {
     return COLLECTION;

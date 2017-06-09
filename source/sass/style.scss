@@ -1,8 +1,8 @@
 @import '~bulma/bulma.sass';
 
-.page {
+.wrapper {
   position: relative;
-  transition: 250ms opacity linear, 250ms transform linear;
+  transition: 250ms opacity linear, 250ms transform linear, 250ms filter linear;
 
   &.loading {
     opacity: 0;

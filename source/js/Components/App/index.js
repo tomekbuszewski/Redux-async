@@ -19,15 +19,17 @@ const Matcher = ({ match }) => {
 };
 
 const App = ({ loaded }) => (
-  <div className={`page ${loaded.loaded ? 'loaded' : 'loading'}`}>
+  <div className="page">
     <Nav />
-    <Section>
-      <Route exact path="/" render={() => <PostList url="/" />} />
-      <Route path="/:any/:slug?/:inner?/:even?/:deeper?" component={Matcher} />
-    </Section>
-    <Section>
-      <PaginationButton />
-    </Section>
+    <div className={`wrapper ${loaded.loaded ? 'loaded' : 'loading'}`}>
+      <Section>
+        <Route exact path="/" render={() => <PostList url="/" />} />
+        <Route path="/:any/:slug?/:inner?/:even?/:deeper?" component={Matcher} />
+      </Section>
+      <Section>
+        <PaginationButton />
+      </Section>
+    </div>
   </div>
 );
 
