@@ -1,5 +1,5 @@
 const findObject = (counter, arr, key, query) => {
-  if (typeof arr === 'undefined' || counter >= arr.length) { return false }
+  if (arr === null || typeof arr === 'undefined' || counter >= arr.length) { return false }
 
   if (arr[counter][key] === query) {
     return arr[counter];

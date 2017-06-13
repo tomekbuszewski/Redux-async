@@ -97,6 +97,6 @@ export const orderByCriteria = (database, field, desc = true) => {
  * @param {string} value - value which against to filter
  * @returns {array} - filtered collection
  */
-export const filterByCriteria = (database, parent = null, field, value) => {
-  return (value === '' || value === null) ? database : database.filter(item => findObject(0, parent !== null ? item[parent] : item, field, value));
+export const filterByCriteria = (database, parent = false, field, value) => {
+  return (value === '' || value === null || parent === false || parent === null || typeof parent === 'undefined') ? database : database.filter(item => findObject(0, parent !== null ? item[parent] : item, field, value));
 };

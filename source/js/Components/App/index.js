@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route, withRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import Nav from '../../Containers/Nav';
 import Section from '../../Containers/Section';
@@ -13,18 +14,22 @@ import PaginationButton from '../Button/PaginationButton';
 const Matcher = ({ match }) => {
   const { params, url } = match;
   const { any, slug } = params;
-  const post = !(isNaN(any) && isNaN(slug));
+  const isPostList = typeof any === 'undefined' || (isNaN(Number(any)) && isNaN(Number(slug)));
 
-  return post ? <Post url={match.url} /> : <PostList url={url} />
+  return isPostList ? <PostList url={url} /> : <Post url={url} />
 };
 
 const App = ({ loaded }) => (
   <div className="page">
+    <Helmet>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width" />
+    </Helmet>
     <Nav />
     <div className={`wrapper ${loaded.loaded ? 'loaded' : 'loading'}`}>
       <Section>
-        <Route exact path="/" render={() => <PostList url="/" />} />
-        <Route path="/:any/:slug?/:inner?/:even?/:deeper?" component={Matcher} />
+        {/*<Route exact path="/" render={() => <PostList url="/" />} />*/}
+        <Route path="/:any?/:slug?/:inner?/:even?/:deeper?" component={Matcher} />
       </Section>
       <Section>
         <PaginationButton />
