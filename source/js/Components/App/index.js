@@ -9,8 +9,6 @@ import Section from '../../Containers/Section';
 import PostList from '../PostList';
 import Post from '../../Containers/Post';
 
-import PaginationButton from '../Button/PaginationButton';
-
 const Matcher = ({ match }) => {
   const { params, url } = match;
   const { any, slug } = params;
@@ -30,9 +28,6 @@ const App = ({ loaded }) => (
       <Section>
         {/*<Route exact path="/" render={() => <PostList url="/" />} />*/}
         <Route path="/:any?/:slug?/:inner?/:even?/:deeper?" component={Matcher} />
-      </Section>
-      <Section>
-        <PaginationButton />
       </Section>
     </div>
   </div>

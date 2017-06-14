@@ -14,3 +14,5 @@ export const getType = url => {
 
   return typeof RETURN === 'undefined' ? '' : RETURN;
 };
+
+export const lastSlash = url => url.substr(url.length - 1) === '/' ? url : `${url}/`;
