@@ -8,8 +8,10 @@ import compression from 'compression';
 import fs from 'fs';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
+import { Helmet } from 'react-helmet';
 
 import expect from '../source/js/Services/Expect';
+import { getPagination, lastSlash } from '../source/js/Services/UrlParser';
 import cache from './cache';
 
 import { API_URL } from '../source/config';
@@ -23,7 +25,7 @@ const SINGLE = 'SINGLE';
 
 const CSS = fs.readFileSync(path.resolve(__dirname, '..', 'public', 'main.css'), 'utf-8');
 
-const build = (reactBuild = null, data, css = CSS) => `<!doctype html><html><head><style>${css}</style></head><body><div id="root">${reactBuild}</div><script src="/public/index.js" defer></script><script>__INITIAL__ = ${serialize(data, { isJSON: true })}</script></body></html>`;
+const build = (helmet, reactBuild = null, data, css = CSS) => `<!doctype html><html><head>${helmet.title.toString()}${helmet.meta.toString()}<link rel="stylesheet" href="/public/main.css" /></head><body><div id="root">${reactBuild}</div><script src="/public/index.js" defer></script><script>__INITIAL__ = ${serialize(data, { isJSON: true })}</script></body></html>`;
 const resolveType = (data) => {
   if (expect.objectToHave(data, 'posts')) {
     return COLLECTION;
@@ -39,22 +41,25 @@ const createData = (data) => {
   }
 };
 const buildInitialState = (url, data) => {
-  const fetched = ['/'];
+  const fetched = [];
+  const pagination = {};
   const content = createData(data);
 
   for (const item of content) {
     fetched.push(item.url);
   }
 
+  fetched.push(lastSlash(url));
+  pagination[lastSlash(url)] = getPagination(url);
+
   return {
     Transitions: {
       loaded: true
     },
     Content: {
-      currentPage: 1,
-      nextPage: 2,
       content,
-      fetched
+      fetched,
+      pagination
     }
   }
 };
@@ -70,8 +75,9 @@ app.get('/*', cache(10), (req, res) => {
     const INITIAL = buildInitialState(ENTRY_POINT, r.data);
     const STORE = makeStore(INITIAL);
     const BUILD = renderToString(<StaticRouter location={ENTRY_POINT} context={{}}><Provider store={STORE}><App /></Provider></StaticRouter>);
+    const HELMET = Helmet.renderStatic();
 
-    res.send(build(BUILD, STORE.getState()));
+    res.send(build(HELMET, BUILD, STORE.getState()));
   })
 });
 

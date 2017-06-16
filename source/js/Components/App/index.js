@@ -1,35 +1,35 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route, withRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
-import Header from '../../Containers/Header';
+import Nav from '../../Containers/Nav';
 import Section from '../../Containers/Section';
-
-import Link from '../FetchLink';
 
 import PostList from '../PostList';
 import Post from '../../Containers/Post';
 
-import PaginationButton from '../Button/PaginationButton';
-
 const Matcher = ({ match }) => {
-  const { params } = match;
+  const { params, url } = match;
   const { any, slug } = params;
-  const post = !(isNaN(any) && isNaN(slug));
+  const isPostList = typeof any === 'undefined' || (isNaN(Number(any)) && isNaN(Number(slug)));
 
-  return post ? <Post url={match.url} /> : <div />
+  return isPostList ? <PostList url={url} /> : <Post url={url} />
 };
 
 const App = ({ loaded }) => (
-  <div className={`page ${loaded.loaded ? 'loaded' : 'loading'}`}>
-    <Header>Title, <Link href="/">Index</Link></Header>
-    <Section>
-      <Route exact path="/" render={() => <PostList url="/" />} />
-      <Route path="/:any/:slug?/:inner?/:even?/:deeper?" component={Matcher} />
-    </Section>
-    <Section>
-      <PaginationButton />
-    </Section>
+  <div className="page">
+    <Helmet>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width" />
+    </Helmet>
+    <Nav />
+    <div className={`wrapper ${loaded.loaded ? 'loaded' : 'loading'}`}>
+      <Section>
+        {/*<Route exact path="/" render={() => <PostList url="/" />} />*/}
+        <Route path="/:any?/:slug?/:inner?/:even?/:deeper?" component={Matcher} />
+      </Section>
+    </div>
   </div>
 );
 

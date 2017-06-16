@@ -1,3 +1,5 @@
+import findObject from './FindObject';
+
 /**
  * Function that finds post in database by given criteria
  * @param {array} database - given database
@@ -74,4 +76,27 @@ export const resolveCollection = (database, url, answers) => {
   } else {
     return answers.fetch;
   }
+};
+
+/**
+ * Function that sorts a collection
+ * @param {array} database - given collection
+ * @param {string} field - on which field the sorting should occur
+ * @param {boolean} desc - whether should sort descending or ascending
+ * @returns {array} - sorted collection
+ */
+export const orderByCriteria = (database, field, desc = true) => {
+  return database.sort((a, b) => desc ? b[field] - a[field] : a[field] - b[field]);
+};
+
+/**
+ * Function that filters collection according to requirements
+ * @param {array} database - given collection
+ * @param {string} [parent=null] - array in the object
+ * @param {string} field - field which against to filter
+ * @param {string} value - value which against to filter
+ * @returns {array} - filtered collection
+ */
+export const filterByCriteria = (database, parent = false, field, value) => {
+  return (value === '' || value === null || parent === false || parent === null || typeof parent === 'undefined') ? database : database.filter(item => findObject(0, parent !== null ? item[parent] : item, field, value));
 };

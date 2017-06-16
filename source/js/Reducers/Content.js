@@ -1,10 +1,9 @@
-import { INSERT_POST, INSERT_CONTENT, BUMP_PAGE, FETCH_COLLECTION } from '../Actions/Content';
+import { INSERT_POST, INSERT_CONTENT, BUMP_PAGE, FETCH_COLLECTION, NO_MORE_CONTENT } from '../Actions/Content';
 
 const defaultState = {
-  currentPage: 0,
-  nextPage: 1,
   content: [],
-  fetched: []
+  fetched: [],
+  pagination: {}
 };
 
 const reducer = (state = defaultState, action) => {
@@ -12,14 +11,21 @@ const reducer = (state = defaultState, action) => {
     case INSERT_POST:
       return { ...state, content: [ ...state.content, action.payload ], fetched: [ ...state.fetched, action.url ] };
     case INSERT_CONTENT:
-      const newState = {...state};
-      newState.content[action.payload.id].content = action.payload.data;
+      const insertContentState = {...state};
+      insertContentState.content[action.payload.id].content = action.payload.data;
 
-      return newState;
+      return insertContentState;
     case `${FETCH_COLLECTION}_SUCCESS`:
       return { ...state, fetched: [ ...state.fetched, action.meta.previousAction.payload.request.url ]};
     case BUMP_PAGE:
-      return { ...state, currentPage: state.nextPage, nextPage: ++state.nextPage };
+      return { ...state, pagination: { ...state.pagination, [action.payload]: typeof state.pagination[action.payload] !== 'undefined' ? Number(state.pagination[action.payload]) + 1 : '1' }};
+    case NO_MORE_CONTENT:
+      return { ...state,
+        pagination: {
+          ...state.pagination,
+          [action.payload]: false
+        }
+      };
     default:
       return state;
   }
