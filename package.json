@@ -51,6 +51,7 @@
   },
   "scripts": {
     "push": "ssh buszewski@s15.mydevil.net 'cd domains/test.buszewski.usermd.net/public_nodejs && git pull && npm install && npm run prod'",
+    "postinstall": "webpack -p",
     "dev": "concurrently \"yarn serve\" \"yarn watch\"",
     "serve": "nodemon --watch server server",
     "watch": "webpack -w",
