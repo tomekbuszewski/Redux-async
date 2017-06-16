@@ -11,7 +11,7 @@ import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
 
 import expect from '../source/js/Services/Expect';
-import { getPagination } from '../source/js/Services/UrlParser';
+import { getPagination, lastSlash } from '../source/js/Services/UrlParser';
 import cache from './cache';
 
 import { API_URL } from '../source/config';
@@ -49,8 +49,8 @@ const buildInitialState = (url, data) => {
     fetched.push(item.url);
   }
 
-  fetched.push(url);
-  pagination[url] = getPagination(url);
+  fetched.push(lastSlash(url));
+  pagination[lastSlash(url)] = getPagination(url);
 
   return {
     Transitions: {

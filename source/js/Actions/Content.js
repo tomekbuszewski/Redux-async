@@ -14,6 +14,7 @@ export const INSERT_POST = builder(PREFIX, 'insert in database');
 export const INSERT_CONTENT = builder(PREFIX, 'add content to post');
 export const ALREADY_IN_DATABASE = builder(PREFIX, 'already in database');
 export const BUMP_PAGE = builder(PREFIX, 'bump pagination number');
+export const NO_MORE_CONTENT = builder(PREFIX, 'no more posts to fetch');
 
 /**
  * Matcher for type
@@ -71,6 +72,9 @@ export const fetch = (url, type, cb = null) => dispatch => {
             dispatch({ type: BUMP_PAGE, payload: getPagination(url, false) });
 
             if (typeof cb === 'function') cb();
+            dispatch({ type: END_TRANSITION });
+          }).catch(() => {
+            dispatch({ type: NO_MORE_CONTENT, payload: getPagination(url, false) });
             dispatch({ type: END_TRANSITION });
           });
           break;

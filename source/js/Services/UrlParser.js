@@ -15,12 +15,12 @@ export const getType = url => {
   return typeof RETURN === 'undefined' ? '' : RETURN;
 };
 
+export const lastSlash = url => url.substr(url.length - 1) === '/' ? url : `${url}/`;
+
 export const getPagination = (url, getNumber = true) => {
   if (url.indexOf('/page/') > -1) {
-    return url.split('page/')[getNumber ? 1 : 0];
+    return lastSlash(url.split('/page/')[getNumber ? 1 : 0]);
   } else {
-    return '1';
+    return Number('1');
   }
 };
-
-export const lastSlash = url => url.substr(url.length - 1) === '/' ? url : `${url}/`;

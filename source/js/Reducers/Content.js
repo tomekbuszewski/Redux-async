@@ -1,4 +1,4 @@
-import { INSERT_POST, INSERT_CONTENT, BUMP_PAGE, FETCH_COLLECTION } from '../Actions/Content';
+import { INSERT_POST, INSERT_CONTENT, BUMP_PAGE, FETCH_COLLECTION, NO_MORE_CONTENT } from '../Actions/Content';
 
 const defaultState = {
   content: [],
@@ -19,6 +19,13 @@ const reducer = (state = defaultState, action) => {
       return { ...state, fetched: [ ...state.fetched, action.meta.previousAction.payload.request.url ]};
     case BUMP_PAGE:
       return { ...state, pagination: { ...state.pagination, [action.payload]: typeof state.pagination[action.payload] !== 'undefined' ? Number(state.pagination[action.payload]) + 1 : '1' }};
+    case NO_MORE_CONTENT:
+      return { ...state,
+        pagination: {
+          ...state.pagination,
+          [action.payload]: false
+        }
+      };
     default:
       return state;
   }
