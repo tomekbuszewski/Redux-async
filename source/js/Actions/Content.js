@@ -1,6 +1,7 @@
 import builder from '../Services/ActionNameBuilder';
 import { START_TRANSITION, END_TRANSITION } from './Transitions';
 import { resolvePost, resolveCollection, getIndex, getPost } from '../Services/Database';
+import { getPagination } from '../Services/UrlParser';
 
 import store from '../Utils/store';
 
@@ -67,9 +68,7 @@ export const fetch = (url, type, cb = null) => dispatch => {
               }
             }
 
-            if (url === '/' || url.indexOf('/page/') > -1) {
-              dispatch({ type: BUMP_PAGE });
-            }
+            dispatch({ type: BUMP_PAGE, payload: getPagination(url, false) });
 
             if (typeof cb === 'function') cb();
             dispatch({ type: END_TRANSITION });

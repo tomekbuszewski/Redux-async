@@ -11,6 +11,7 @@ import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
 
 import expect from '../source/js/Services/Expect';
+import { getPagination } from '../source/js/Services/UrlParser';
 import cache from './cache';
 
 import { API_URL } from '../source/config';
@@ -41,6 +42,7 @@ const createData = (data) => {
 };
 const buildInitialState = (url, data) => {
   const fetched = [];
+  const pagination = {};
   const content = createData(data);
 
   for (const item of content) {
@@ -48,16 +50,16 @@ const buildInitialState = (url, data) => {
   }
 
   fetched.push(url);
+  pagination[url] = getPagination(url);
 
   return {
     Transitions: {
       loaded: true
     },
     Content: {
-      currentPage: 1,
-      nextPage: 2,
       content,
-      fetched
+      fetched,
+      pagination
     }
   }
 };
