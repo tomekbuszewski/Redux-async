@@ -18,7 +18,7 @@ const reducer = (state = defaultState, action) => {
     case `${FETCH_COLLECTION}_SUCCESS`:
       return { ...state, fetched: [ ...state.fetched, action.meta.previousAction.payload.request.url ]};
     case BUMP_PAGE:
-      return { ...state, pagination: { ...state.pagination, [action.payload]: typeof state.pagination[action.payload] !== 'undefined' ? Number(state.pagination[action.payload]) + 1 : '1' }};
+      return { ...state, pagination: { ...state.pagination, [action.payload]: typeof state.pagination[action.payload] !== 'undefined' ? Number(state.pagination[action.payload]) + 1 : Number('1') }};
     case NO_MORE_CONTENT:
       return { ...state,
         pagination: {

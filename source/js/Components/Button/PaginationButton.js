@@ -1,22 +1,27 @@
 import React from 'react';
-import Button from './index';
 import { connect } from 'react-redux';
+import Waypoint from 'react-waypoint';
 
 import expect from '../../Services/Expect';
 
 import { fetch } from '../../Actions/Content';
-import { lastSlash } from '../../Services/UrlParser';
+import { lastSlash, createPaginationLink } from '../../Services/UrlParser';
+let oldWaypoint = 0;
 
-const PaginationButton = ({ pagination, fetch, start = '' }) => {
+const PaginationButton = ({ pagination, fetch, loaded, start = '' }) => {
   const next = expect.objectToHave(pagination, lastSlash(start)) ? pagination[lastSlash(start)] : Number('1');
 
-  return next === false ? <div /> : <Button action={() => {
-    fetch(`${lastSlash(start)}page/${Number(next) + 1}`, 'collection')
-  }}>Pagination, {next + 1}</Button>;
+  return !next || !loaded ? <div /> : <Waypoint onEnter={(p) => {
+    if (oldWaypoint !== p.waypointBottom) {
+      fetch(createPaginationLink(start, next + 1), 'collection');
+      oldWaypoint = p.waypointBottom;
+    }
+  }} />
 };
 
-const mapStateToProps = ({ Content }) => {
+const mapStateToProps = ({ Content, Transitions }) => {
   return {
+    loaded: Transitions.loaded,
     pagination: Content.pagination
   }
 };
