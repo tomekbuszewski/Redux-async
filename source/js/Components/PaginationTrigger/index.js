@@ -5,7 +5,10 @@ import Waypoint from 'react-waypoint';
 import expect from '../../Services/Expect';
 
 import { fetch } from '../../Actions/Content';
-import { lastSlash, createPaginationLink } from '../../Services/UrlParser';
+import {
+  lastSlash,
+  createPaginationLink
+} from '../../Services/UrlParser';
 let oldWaypoint = 0;
 
 const PaginationButton = ({ pagination, fetch, loaded, start = '' }) => {

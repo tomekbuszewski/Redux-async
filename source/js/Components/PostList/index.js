@@ -6,14 +6,14 @@ import { onlyUpdateForKeys } from 'recompose';
 import { fetch } from '../../Actions/Content';
 
 import List from './ListContainer';
-import PaginationButtom from '../Button/PaginationButton';
+import Pagination from '../PaginationTrigger';
 
 const PostList = ({ posts, url, title = 'Strona główna', withPagination = true }) => {
   return (
     <div>
       {title && <Helmet><title>{title}</title></Helmet>}
       <List posts={posts} url={url} />
-      {withPagination && <PaginationButtom start={url} />}
+      {withPagination && <Pagination start={url} />}
     </div>
   );
 }
