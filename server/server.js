@@ -43,14 +43,16 @@ const createData = (data) => {
 const buildInitialState = (url, data) => {
   const fetched = [];
   const pagination = {};
-  const content = createData(data);
+  const content = data === null ? [] : createData(data);
 
-  for (const item of content) {
-    fetched.push(item.url);
+  if (data !== null) {
+    for (const item of content) {
+      fetched.push(item.url);
+    }
+
+    fetched.push(lastSlash(url));
+    pagination[lastSlash(url)] = getPagination(url);
   }
-
-  fetched.push(lastSlash(url));
-  pagination[lastSlash(url)] = getPagination(url);
 
   return {
     Transitions: {
@@ -64,6 +66,15 @@ const buildInitialState = (url, data) => {
   }
 };
 
+const buildResponse = (entry, response, url, res) => {
+    const INITIAL = buildInitialState(entry, response);
+    const STORE = makeStore(INITIAL);
+    const BUILD = renderToString(<StaticRouter location={url} context={{}}><Provider store={STORE}><App /></Provider></StaticRouter>);
+    const HELMET = Helmet.renderStatic();
+
+    res.send(build(HELMET, BUILD, STORE.getState()));
+};
+
 app.use(compression());
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
@@ -72,14 +83,13 @@ app.get('/*', cache(10), (req, res) => {
   const URL = `${API_URL}${ENTRY_POINT}`;
 
   axios.get(URL).then(r => {
-    const INITIAL = buildInitialState(ENTRY_POINT, r.data);
-    const STORE = makeStore(INITIAL);
-    const BUILD = renderToString(<StaticRouter location={ENTRY_POINT} context={{}}><Provider store={STORE}><App /></Provider></StaticRouter>);
-    const HELMET = Helmet.renderStatic();
-
-    res.send(build(HELMET, BUILD, STORE.getState()));
+    buildResponse(ENTRY_POINT, r.data, URL, res);
   }).catch(() => {
-    res.send('...');
+    if (ENTRY_POINT === '/error') {
+      buildResponse(ENTRY_POINT, null, URL, res);
+    } else {
+      res.redirect(301, 'error');
+    }
   })
 });
 

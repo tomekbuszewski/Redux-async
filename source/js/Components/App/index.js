@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import Nav from '../../Containers/Nav';
@@ -8,13 +8,14 @@ import Section from '../../Containers/Section';
 
 import PostList from '../PostList';
 import Post from '../../Containers/Post';
+import Error from '../../Containers/Error';
 
 const Matcher = ({ match }) => {
   const { params, url } = match;
   const { any, slug } = params;
   const isPostList = typeof any === 'undefined' || (isNaN(Number(any)) && isNaN(Number(slug)));
 
-  return isPostList ? <PostList url={url} /> : <Post url={url} />
+  return isPostList ? <PostList url={url} /> : <Post url={url} />;
 };
 
 const App = ({ loaded }) => (
@@ -26,8 +27,10 @@ const App = ({ loaded }) => (
     <Nav />
     <div className={`wrapper ${loaded.loaded ? 'loaded' : 'loading'}`}>
       <Section>
-        {/*<Route exact path="/" render={() => <PostList url="/" />} />*/}
-        <Route path="/:any?/:slug?/:inner?/:even?/:deeper?" component={Matcher} />
+        <Switch>
+          <Route path="/error" exact component={Error} />
+          <Route path="/:any?/:slug?/:inner?/:even?/:deeper?" component={Matcher} />
+        </Switch>
       </Section>
     </div>
   </div>
