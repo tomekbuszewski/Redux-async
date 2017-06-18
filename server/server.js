@@ -78,6 +78,8 @@ app.get('/*', cache(10), (req, res) => {
     const HELMET = Helmet.renderStatic();
 
     res.send(build(HELMET, BUILD, STORE.getState()));
+  }).catch(() => {
+    res.send('...');
   })
 });
 
