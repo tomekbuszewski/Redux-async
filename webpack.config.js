@@ -10,7 +10,6 @@ var browserSync = new BrowserSyncPlugin({
     ws: true
   }
 });
-var stylelint = new StyleLintPlugin({ context: './source' });
 
 module.exports = {
   devtool: 'source-map',
@@ -38,15 +37,13 @@ module.exports = {
         use: [
           { loader: 'babel-loader', options: {
             "presets": [["es2015", { "modules": false }], "react" , "stage-0"]
-          } },
-          { loader: 'eslint-loader'}
+          } }
         ]
       }
     ]
   },
   plugins: [
     extractScss,
-    browserSync,
-    stylelint
+    browserSync
   ]
 };

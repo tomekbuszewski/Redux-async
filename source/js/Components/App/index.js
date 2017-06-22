@@ -1,40 +1,40 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import Nav from '../../Containers/Nav';
 import Section from '../../Containers/Section';
 
-import PostList from '../PostList';
-import Post from '../../Containers/Post';
+import Routes from '../Routes';
+import Error from '../../Containers/Error';
 
-const Matcher = ({ match }) => {
-  const { params, url } = match;
-  const { any, slug } = params;
-  const isPostList = typeof any === 'undefined' || (isNaN(Number(any)) && isNaN(Number(slug)));
+const App = ({ loaded, status = 200 }) => {
+  console.log(status);
 
-  return isPostList ? <PostList url={url} /> : <Post url={url} />
+  return (
+    <div className="page">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        {status !== 200 && <title>Błąd</title>}
+      </Helmet>
+      <Nav />
+      <div className={`wrapper ${loaded.loaded ? 'loaded' : 'loading'}`}>
+        <Section>
+          {/*<Route exact path="/" render={() => <PostList url="/" />} />*/}
+          {status !== 200 ? <Error /> : <Routes />}
+        </Section>
+      </div>
+    </div>
+  );
 };
 
-const App = ({ loaded }) => (
-  <div className="page">
-    <Helmet>
-      <meta charSet="utf-8" />
-      <meta name="viewport" content="width=device-width" />
-    </Helmet>
-    <Nav />
-    <div className={`wrapper ${loaded.loaded ? 'loaded' : 'loading'}`}>
-      <Section>
-        {/*<Route exact path="/" render={() => <PostList url="/" />} />*/}
-        <Route path="/:any?/:slug?/:inner?/:even?/:deeper?" component={Matcher} />
-      </Section>
-    </div>
-  </div>
-);
-
 const mapStateToProps = ({ Transitions }) => {
-  return { loaded: Transitions }
+  return {
+    loaded: Transitions,
+    status: Transitions.status
+  }
 };
 
 export default withRouter(connect(mapStateToProps)(App));
