@@ -18,9 +18,13 @@ export const getType = url => {
 export const lastSlash = url => url.substr(url.length - 1) === '/' ? url : `${url}/`;
 
 export const getPagination = (url, getNumber = true) => {
-  if (url.indexOf('/page/') > -1) {
+  const hasPages = url.indexOf('/page/') > -1;
+
+  if (hasPages) {
     return lastSlash(url.split('/page/')[getNumber ? 1 : 0]);
   } else {
-    return Number('1');
+    return getNumber ? Number('1') : url;
   }
 };
+
+export const createPaginationLink = (url, page) => `${lastSlash(url)}page/${page}`;

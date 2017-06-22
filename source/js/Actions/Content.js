@@ -72,7 +72,7 @@ export const fetch = (url, type, cb = null) => dispatch => {
             dispatch({ type: BUMP_PAGE, payload: getPagination(url, false) });
 
             if (typeof cb === 'function') cb();
-            dispatch({ type: END_TRANSITION });
+            setTimeout(() => {dispatch({ type: END_TRANSITION })}, 250);
           }).catch(() => {
             dispatch({ type: NO_MORE_CONTENT, payload: getPagination(url, false) });
             dispatch({ type: END_TRANSITION });

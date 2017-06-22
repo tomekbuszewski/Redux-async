@@ -4,20 +4,16 @@ import { Helmet } from 'react-helmet';
 import { onlyUpdateForKeys } from 'recompose';
 
 import { fetch } from '../../Actions/Content';
-import { getLastPart, getType } from '../../Services/UrlParser';
-import { orderByCriteria, filterByCriteria } from '../../Services/Database';
 
-import Card from '../../Containers/Card';
-import PaginationButtom from '../Button/PaginationButton';
+import List from './ListContainer';
+import Pagination from '../PaginationTrigger';
 
 const PostList = ({ posts, url, title = 'Strona główna', withPagination = true }) => {
   return (
     <div>
-      {title && <Helmet>
-        <title>{title}</title>
-      </Helmet>}
-      {orderByCriteria(filterByCriteria(posts, getType(url), 'slug', getLastPart(url)), 'date').map(i => <Card key={i.id} link={i.url} title={i.title} />)}
-      {withPagination && <PaginationButtom start={url} />}
+      {title && <Helmet><title>{title}</title></Helmet>}
+      <List posts={posts} url={url} />
+      {withPagination && <Pagination start={url} />}
     </div>
   );
 }
