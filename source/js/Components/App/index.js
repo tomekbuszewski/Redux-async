@@ -9,7 +9,7 @@ import Section from '../../Containers/Section';
 import Routes from '../Routes';
 import Error from '../../Containers/Error';
 
-const App = ({ loaded, status = 200 }) => {
+const App = ({ loaded, status }) => {
   return (
     <div className="page">
       <Helmet>

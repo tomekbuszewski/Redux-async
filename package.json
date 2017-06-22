@@ -48,7 +48,7 @@
     "stylelint": "^7.10.1",
     "stylelint-scss": "^1.4.3",
     "stylelint-webpack-plugin": "^0.7.0",
-    "webpack": "^2.2.1"
+    "webpack": "^3.0.0"
   },
   "scripts": {
     "push": "ssh buszewski@s15.mydevil.net 'cd domains/test.buszewski.usermd.net/public_nodejs && git pull && npm install && npm run prod'",
