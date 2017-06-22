@@ -23,9 +23,27 @@ const PORT = 1199;
 const COLLECTION = 'COLLECTION';
 const SINGLE = 'SINGLE';
 
+/**
+ * CSS string extracted from compiled file
+ */
 const CSS = fs.readFileSync(path.resolve(__dirname, '..', 'public', 'main.css'), 'utf-8');
 
+/**
+ * Function returning HTML string for our website
+ * @param {object} helmet - react helmet
+ * @param {object} reactBuild - react app rendered to string
+ * @param {object} data - initial state data
+ * @param {string} css - css
+ *
+ * @returns {string} compiled html
+ */
 const build = (helmet, reactBuild = null, data, css = CSS) => `<!doctype html><html><head>${helmet.title.toString()}${helmet.meta.toString()}<link rel="stylesheet" href="/public/main.css" /></head><body><div id="root">${reactBuild}</div><script src="/public/index.js" defer></script><script>__INITIAL__ = ${serialize(data, { isJSON: true })}</script></body></html>`;
+
+/**
+ * Function that resolves types of provided data
+ * @param {object} data - given data
+ * @returns {string} either single or collection
+ */
 const resolveType = (data) => {
   if (expect.objectToHave(data, 'posts')) {
     return COLLECTION;
@@ -33,6 +51,12 @@ const resolveType = (data) => {
     return SINGLE;
   }
 };
+
+/**
+ * Function that creates properly formatted data
+ * @param {object} data - initial data
+ * @returns {array} - always returns an array, either with one or many entries
+ */
 const createData = (data) => {
   if (resolveType(data) === COLLECTION) {
     return data.posts;
@@ -40,6 +64,14 @@ const createData = (data) => {
     return [data];
   }
 };
+
+/**
+ * Function for building initial state in shape of reducers
+ * @param {string} url - initial url
+ * @param {object} data - given data
+ * @param {string|int} status - response status
+ * @returns {object} initial state
+ */
 const buildInitialState = (url, data, status) => {
   const fetched = [];
   const pagination = {};
@@ -65,6 +97,15 @@ const buildInitialState = (url, data, status) => {
   }
 };
 
+/**
+ * Function that generates the final response based on given params
+ * @param {string} entry - entry url
+ * @param {string} data - data provided by response
+ * @param {function} res - function `res` passed by express
+ * @param {string|int} [status=200] - response status
+ *
+ * @returns {undefined}
+ */
 const makeResponse = (entry, data, res, status = 200) => {
   const INITIAL = buildInitialState(entry, data, status);
   const STORE = makeStore(INITIAL);
