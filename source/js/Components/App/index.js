@@ -10,8 +10,6 @@ import Routes from '../Routes';
 import Error from '../../Containers/Error';
 
 const App = ({ loaded, status = 200 }) => {
-  console.log(status);
-
   return (
     <div className="page">
       <Helmet>
@@ -22,7 +20,6 @@ const App = ({ loaded, status = 200 }) => {
       <Nav />
       <div className={`wrapper ${loaded.loaded ? 'loaded' : 'loading'}`}>
         <Section>
-          {/*<Route exact path="/" render={() => <PostList url="/" />} />*/}
           {status !== 200 ? <Error /> : <Routes />}
         </Section>
       </div>
