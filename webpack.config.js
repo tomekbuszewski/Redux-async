@@ -1,7 +1,6 @@
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-var StyleLintPlugin = require('stylelint-webpack-plugin');
 
 var extractScss = new ExtractTextPlugin({ filename: '[name].css' });
 var browserSync = new BrowserSyncPlugin({
