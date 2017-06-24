@@ -132,6 +132,10 @@ app.get('/api/*', APICACHE('60 minutes'), (req, res) => {
     res.format({'application/json': () => {
       res.status(200).send(r.data);
     }})
+  }).catch(() => {
+    res.format({'application/json': () => {
+      res.status(404).send(JSON.stringify({error: 404}));
+    }})
   });
 });
 
