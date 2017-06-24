@@ -13,7 +13,6 @@ import { Helmet } from 'react-helmet';
 
 import expect from '../source/js/Services/Expect';
 import { getPagination, lastSlash } from '../source/js/Services/UrlParser';
-import cache from './cache';
 
 import { API_URL } from '../source/config';
 import { makeStore } from '../source/js/Utils/store';
@@ -120,21 +119,26 @@ const makeResponse = (entry, data, res, status = 200) => {
 app.use(compression());
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
+app.get('/api/cache/clear/:target?', (req, res) => {
+  const target = typeof req.params.target === 'undefined' ? '/' : req.params.target;
+  res.json(apicache.clear(target));
+});
+
 /**
  * Front-end api cache
  */
-app.get('/api/*', APICACHE('60 minutes'), (req, res) => {
+app.get('/api/*', APICACHE('10 minutes'), (req, res) => {
   // const urlParam = req.params.url;
   const url = req.url.replace('/api','');
   const fetchUrl = `${API_URL}${url}`;
 
   axios.get(fetchUrl).then(r => {
     res.format({'application/json': () => {
-      res.status(200).send(r.data);
+      res.status(200).json(r.data);
     }})
   }).catch(() => {
     res.format({'application/json': () => {
-      res.status(404).send(JSON.stringify({error: 404}));
+      res.status(404).json(JSON.stringify({error: 404}));
     }})
   });
 });
@@ -142,7 +146,7 @@ app.get('/api/*', APICACHE('60 minutes'), (req, res) => {
 /**
  * Backend server
  */
-app.get('/*', cache(10), (req, res) => {
+app.get('/*', APICACHE('10 minutes'), (req, res) => {
   const ENTRY_POINT = req.url;
   const URL = `${API_URL}${ENTRY_POINT}`;
 
