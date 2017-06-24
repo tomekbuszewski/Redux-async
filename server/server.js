@@ -6,6 +6,7 @@ import serialize from 'serialize-javascript';
 import path from 'path';
 import compression from 'compression';
 import fs from 'fs';
+import apicache from 'apicache';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
@@ -22,6 +23,7 @@ const app = express();
 const PORT = 1199;
 const COLLECTION = 'COLLECTION';
 const SINGLE = 'SINGLE';
+const APICACHE = apicache.middleware;
 
 /**
  * CSS string extracted from compiled file
@@ -118,6 +120,24 @@ const makeResponse = (entry, data, res, status = 200) => {
 app.use(compression());
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
+/**
+ * Front-end api cache
+ */
+app.get('/api/*', APICACHE('60 minutes'), (req, res) => {
+  // const urlParam = req.params.url;
+  const url = req.url.replace('/api','');
+  const fetchUrl = `${API_URL}${url}`;
+
+  axios.get(fetchUrl).then(r => {
+    res.format({'application/json': () => {
+      res.status(200).send(r.data);
+    }})
+  });
+});
+
+/**
+ * Backend server
+ */
 app.get('/*', cache(10), (req, res) => {
   const ENTRY_POINT = req.url;
   const URL = `${API_URL}${ENTRY_POINT}`;

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "apicache": "^0.8.7",
     "axios": "^0.16.1",
     "babel-core": "^6.24.0",
     "babel-jest": "^20.0.3",
