@@ -1,7 +1,6 @@
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-var StyleLintPlugin = require('stylelint-webpack-plugin');
 
 var extractScss = new ExtractTextPlugin({ filename: '[name].css' });
 var browserSync = new BrowserSyncPlugin({
@@ -10,7 +9,6 @@ var browserSync = new BrowserSyncPlugin({
     ws: true
   }
 });
-var stylelint = new StyleLintPlugin({ context: './source' });
 
 module.exports = {
   devtool: 'source-map',
@@ -38,15 +36,13 @@ module.exports = {
         use: [
           { loader: 'babel-loader', options: {
             "presets": [["es2015", { "modules": false }], "react" , "stage-0"]
-          } },
-          { loader: 'eslint-loader'}
+          } }
         ]
       }
     ]
   },
   plugins: [
     extractScss,
-    browserSync,
-    stylelint
+    browserSync
   ]
 };
