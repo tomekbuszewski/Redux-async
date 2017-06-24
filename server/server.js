@@ -20,9 +20,10 @@ import App from '../source/js/Components/App';
 
 const app = express();
 const PORT = 1199;
+const CACHE_TIME = '10 minutes';
 const COLLECTION = 'COLLECTION';
 const SINGLE = 'SINGLE';
-const APICACHE = apicache.middleware;
+const CACHE = apicache.middleware;
 
 /**
  * CSS string extracted from compiled file
@@ -127,7 +128,7 @@ app.get('/api/cache/clear/:target?', (req, res) => {
 /**
  * Front-end api cache
  */
-app.get('/api/*', APICACHE('10 minutes'), (req, res) => {
+app.get('/api/*', CACHE(CACHE_TIME), (req, res) => {
   // const urlParam = req.params.url;
   const url = req.url.replace('/api','');
   const fetchUrl = `${API_URL}${url}`;
@@ -146,7 +147,7 @@ app.get('/api/*', APICACHE('10 minutes'), (req, res) => {
 /**
  * Backend server
  */
-app.get('/*', APICACHE('10 minutes'), (req, res) => {
+app.get('/*', CACHE(CACHE_TIME), (req, res) => {
   const ENTRY_POINT = req.url;
   const URL = `${API_URL}${ENTRY_POINT}`;
 

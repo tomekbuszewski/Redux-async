@@ -12,7 +12,7 @@ var browserSync = new BrowserSyncPlugin({
 
 module.exports = {
   devtool: 'source-map',
-  entry: './source/index.js',
+  entry: ['babel-polyfill', './source/index.js'],
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'public')

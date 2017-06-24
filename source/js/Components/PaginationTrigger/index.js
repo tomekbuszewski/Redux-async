@@ -16,7 +16,7 @@ let oldWaypoint = 0;
 const PaginationButton = ({ pagination, fetch, loaded, start = '' }) => {
   const next = expect.objectToHave(pagination, lastSlash(start)) ? pagination[lastSlash(start)] : Number('1');
 
-  return !next || !loaded ? <Loader /> : <Waypoint onEnter={(p) => {
+  return !next || !loaded ? !next ? <div /> : <Loader /> : <Waypoint onEnter={(p) => {
     if (oldWaypoint !== p.waypointBottom) {
       fetch(createPaginationLink(start, next + 1), 'collection');
       oldWaypoint = p.waypointBottom;
