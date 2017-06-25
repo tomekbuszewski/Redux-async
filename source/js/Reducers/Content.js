@@ -1,4 +1,5 @@
 import { INSERT_POST, INSERT_CONTENT, BUMP_PAGE, FETCH_COLLECTION, NO_MORE_CONTENT, SEARCH } from '../Actions/Content';
+import { START_TRANSITION } from '../Actions/Transitions';
 
 const defaultState = {
   content: [],
@@ -9,6 +10,8 @@ const defaultState = {
 
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
+    case START_TRANSITION:
+      return { ...state, search: { data: { count: 0 }, query: '' } };
     case INSERT_POST:
       return { ...state, content: [ ...state.content, action.payload ], fetched: [ ...state.fetched, action.url ] };
     case INSERT_CONTENT:

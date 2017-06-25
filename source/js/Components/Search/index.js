@@ -24,10 +24,10 @@ class Search extends Component {
 
   render() {
     return <div>
-      <DebounceInput minLength={3} debounceTimeout={500} onChange={this.searchQuery} />
+      <DebounceInput minLength={3} value={this.props.query} debounceTimeout={500} onChange={this.searchQuery} />
       <div>
         {this.props.count}
-        {this.props.count > 0 ? this.props.results.map(i => <p><Link href={i.url} type="post">{i.title}</Link></p>) : ''}
+        {this.props.count > 0 ? <ol>{this.props.results.map(i => <li key={`search-${i.id}`}><Link href={i.url} type="post">{i.title}</Link></li>)}</ol> : ''}
       </div>
     </div>
   }
