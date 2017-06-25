@@ -1,8 +1,9 @@
-import { INSERT_POST, INSERT_CONTENT, BUMP_PAGE, FETCH_COLLECTION, NO_MORE_CONTENT } from '../Actions/Content';
+import { INSERT_POST, INSERT_CONTENT, BUMP_PAGE, FETCH_COLLECTION, NO_MORE_CONTENT, SEARCH } from '../Actions/Content';
 
 const defaultState = {
   content: [],
   fetched: [],
+  search: { data: { count: 0 }, query: '' },
   pagination: {}
 };
 
@@ -26,6 +27,10 @@ const reducer = (state = defaultState, action) => {
           [action.payload]: false
         }
       };
+    case SEARCH:
+      return { ...state, search: { data: { count: 0 }, query: action.payload.request.params.s } };
+    case `${SEARCH}_SUCCESS`:
+      return { ...state, search: { ...state.search, data: action.payload.data } };
     default:
       return state;
   }

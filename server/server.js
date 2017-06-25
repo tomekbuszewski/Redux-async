@@ -94,6 +94,7 @@ const buildInitialState = (url, data, status) => {
     Content: {
       content,
       fetched,
+      search: { data: { count: 0 }, query: '' },
       pagination
     }
   }
