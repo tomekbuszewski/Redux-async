@@ -1,4 +1,4 @@
-@import '~bulma/bulma.sass';
+@import './Containers/Loader';
 
 .wrapper {
   position: relative;
@@ -11,10 +11,7 @@
 }
 
 .nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  position: relative;
 }
 
 @keyframes start {

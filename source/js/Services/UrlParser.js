@@ -23,7 +23,7 @@ export const getPagination = (url, getNumber = true) => {
   if (hasPages) {
     return lastSlash(url.split('/page/')[getNumber ? 1 : 0]);
   } else {
-    return getNumber ? Number('1') : url;
+    return getNumber ? Number('1') : lastSlash(url);
   }
 };
 

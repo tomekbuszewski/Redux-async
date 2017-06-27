@@ -15,6 +15,7 @@ export const INSERT_CONTENT = builder(PREFIX, 'add content to post');
 export const ALREADY_IN_DATABASE = builder(PREFIX, 'already in database');
 export const BUMP_PAGE = builder(PREFIX, 'bump pagination number');
 export const NO_MORE_CONTENT = builder(PREFIX, 'no more posts to fetch');
+export const SEARCH = builder(PREFIX, 'search query');
 
 /**
  * Matcher for type
@@ -31,6 +32,19 @@ const matcher = type => {
     default:
       return FETCH_COLLECTION;
   }
+};
+
+export const search = query => dispatch => {
+  dispatch({ type: SEARCH,
+    payload: {
+     request: {
+       url: '/',
+       params: {
+         s: query
+       }
+     }
+    }
+  })
 };
 
 /**
