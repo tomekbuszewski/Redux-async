@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Waypoint from 'react-waypoint';
+
 import expect from '../../Services/Expect';
 import ID from '../../Services/ID';
+
+import Loader from '../../Containers/Loader';
 
 import { BREAKPOINTS } from '../../../config';
 
@@ -50,11 +53,17 @@ class Image extends Component {
     return srcset.sort((a, b) => b.size - a.size);
   }
 
-  returnPicture() {
-    return <Waypoint onEnter={() => { console.log('a') }}><picture>
+  returnPictureCode() {
+    return <picture>
       {this.getSrcSet().map(item => <source key={ID()} media={`(min-width: ${item.size}px)`} srcSet={item.src} />)}
       <img src={this.getSrcSet()[0].src} />
-    </picture></Waypoint>
+    </picture>
+  }
+
+  returnPicture() {
+    return <Waypoint onEnter={() => { this.setState({ loaded: true }) }}>
+      <div className={`picture ${this.state.loaded ? 'picture--loaded' : 'picture--loading'}`}>{this.state.loaded ? this.returnPictureCode() : <Loader />}</div>
+    </Waypoint>
   }
 
   returnImg() {

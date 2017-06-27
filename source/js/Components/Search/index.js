@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DebounceInput from 'react-debounce-input';
+import ID from '../../Services/ID';
 
 import { search } from '../../Actions/Content';
 
@@ -27,7 +28,7 @@ class Search extends Component {
       <DebounceInput minLength={3} value={this.props.query} debounceTimeout={500} onChange={this.searchQuery} />
       <div>
         {this.props.count}
-        {this.props.count > 0 ? <ol>{this.props.results.map(i => <li key={`search-${i.id}`}><Link href={i.url} type="post">{i.title}</Link></li>)}</ol> : ''}
+        {this.props.count > 0 ? <ol>{this.props.results.map(i => <li key={`search-${ID()}`}><Link href={i.url} type="post">{i.title}</Link></li>)}</ol> : ''}
       </div>
     </div>
   }
