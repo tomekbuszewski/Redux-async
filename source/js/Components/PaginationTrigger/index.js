@@ -13,10 +13,10 @@ import {
 } from '../../Services/UrlParser';
 let oldWaypoint = 0;
 
-const PaginationButton = ({ pagination, fetch, loaded, start = '' }) => {
+const PaginationTrigger = ({ pagination, fetch, loaded, start = '' }) => {
   const next = expect.objectToHave(pagination, lastSlash(start)) ? pagination[lastSlash(start)] : Number('1');
 
-  return !next || !loaded ? !next ? <div /> : <Loader /> : <Waypoint onEnter={(p) => {
+  return !next || !loaded ? !next ? <div /> : <Loader /> : <Waypoint bottomOffset="-1000px" onEnter={(p) => {
     if (oldWaypoint !== p.waypointBottom) {
       fetch(createPaginationLink(start, next + 1), 'collection');
       oldWaypoint = p.waypointBottom;
@@ -35,4 +35,4 @@ const mapDispatchToProps = {
   fetch: (url, type) => fetch(url, type)
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PaginationButton);
+export default connect(mapStateToProps, mapDispatchToProps)(PaginationTrigger);
