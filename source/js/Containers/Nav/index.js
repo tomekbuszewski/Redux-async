@@ -4,7 +4,7 @@ import Link from '../../Components/FetchLink';
 import ProgressBar from '../../Components/ProgressBar';
 import Search from '../../Components/Search';
 
-import style from './style.scss';
+import style from './style.css';
 
 const Nav = () => <div className={style.nav}>
   <ProgressBar />
