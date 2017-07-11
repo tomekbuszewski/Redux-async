@@ -1,6 +1,5 @@
 var path = require('path');
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-
 var browserSync = new BrowserSyncPlugin({
   proxy: {
     target: "http://localhost:1199",
@@ -9,7 +8,7 @@ var browserSync = new BrowserSyncPlugin({
 });
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'none',
   entry: './source/index.js',
   output: {
     filename: 'index.js',
@@ -18,11 +17,11 @@ module.exports = {
   module: {
     rules: [
       { // CSS
-        test: /\.|css$/,
-        exclude: [/node_modules/],
+        test: /\.css$/,
         use: [
           { loader: 'style-loader' },
           { loader: 'css-loader', options: { modules: true, localIdentName: '[path][name]_[local]--[hash:base64:8]' } },
+          { loader: 'postcss-loader' },
           { loader: 'resolve-url-loader' },
         ]
       },
