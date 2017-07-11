@@ -5,6 +5,7 @@
     "babel-core": "^6.24.0",
     "babel-jest": "^20.0.3",
     "babel-loader": "^7.0.0",
+    "babel-plugin-react-css-modules": "^3.0.1",
     "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "latest",
     "babel-preset-es2015-native-modules": "^6.9.4",
@@ -16,6 +17,7 @@
     "compression": "^1.6.2",
     "concurrently": "^3.4.0",
     "css-loader": "^0.27.3",
+    "css-modules-require-hook": "^4.0.6",
     "enzyme": "^2.8.2",
     "eslint": "^3.19.0",
     "eslint-loader": "^1.7.1",
@@ -57,9 +59,9 @@
     "push": "ssh buszewski@s15.mydevil.net 'cd domains/test.buszewski.usermd.net/public_nodejs && git pull && npm install && npm run prod'",
     "dev": "concurrently \"yarn serve\" \"yarn watch\"",
     "serve": "nodemon --watch server server",
-    "watch": "webpack -w",
-    "build": "webpack",
-    "prod": "webpack -p",
+    "watch": "webpack -w --config webpack.config.dev.js",
+    "build": "webpack --config webpack.config.prod.js",
+    "prod": "webpack -p --config webpack.config.prod.js",
     "test": "jest --verbose",
     "test-watch": "jest --watch"
   }

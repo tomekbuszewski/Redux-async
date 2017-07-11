@@ -11,7 +11,7 @@ import Error from '../../Containers/Error';
 
 const App = ({ loaded, status }) => {
   return (
-    <div className="page">
+    <div>
       <Helmet>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width" />

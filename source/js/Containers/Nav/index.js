@@ -4,7 +4,9 @@ import Link from '../../Components/FetchLink';
 import ProgressBar from '../../Components/ProgressBar';
 import Search from '../../Components/Search';
 
-const Nav = () => <div className="nav has-shadow">
+import style from './style.scss';
+
+const Nav = () => <div className={style.nav}>
   <ProgressBar />
   <Search />
   <div className="container">
