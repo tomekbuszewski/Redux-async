@@ -58,7 +58,7 @@
     "dev": "concurrently \"yarn serve\" \"yarn watch\"",
     "serve": "nodemon --watch server server",
     "watch": "webpack -w --config webpack.config.dev.js",
-    "build": "webpack --config webpack.config.prod.js",
+    "build": "webpack --config webpack.config.dev.js",
     "prod": "webpack -p --config webpack.config.prod.js",
     "test": "jest --verbose",
     "test-watch": "jest --watch"
