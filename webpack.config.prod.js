@@ -4,7 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var extractScss = new ExtractTextPlugin({ filename: '[name].css' });
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'none',
   entry: './source/index.js',
   output: {
     filename: 'index.js',
@@ -13,12 +13,12 @@ module.exports = {
   module: {
     rules: [
       { // CSS
-        test: /\.scss$|css$/,
+        test: /\.css$/,
         use: extractScss.extract({
           use: [
             { loader: 'css-loader', options: { modules: true, localIdentName: '[path][name]_[local]--[hash:base64:8]' } },
-            {loader: 'sass-loader', options: {sourceMap: true, includePaths: ['./source/sass']}},
-            {loader: 'resolve-url-loader'},
+            { loader: 'postcss-loader' },
+            { loader: 'resolve-url-loader' },
           ]
         })
       },

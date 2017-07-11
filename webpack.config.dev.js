@@ -18,12 +18,11 @@ module.exports = {
   module: {
     rules: [
       { // CSS
-        test: /\.scss$|css$/,
+        test: /\.|css$/,
         exclude: [/node_modules/],
         use: [
           { loader: 'style-loader' },
           { loader: 'css-loader', options: { modules: true, localIdentName: '[path][name]_[local]--[hash:base64:8]' } },
-          { loader: 'sass-loader', options: { sourceMap: true, includePaths: ['./source/sass'] }},
           { loader: 'resolve-url-loader' },
         ]
       },
