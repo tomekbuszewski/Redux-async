@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const ProgressBar = ({ loaded }) => <div className={`progress-bar progress-bar--${loaded ? 'loaded' : 'loading'}`} />;
+import style from './style.scss';
 
+const ProgressBar = ({ loaded }) => <div className={`${style.bar} ${loaded ? style['bar--loaded'] : null}`} />;
 const mapStateToProps = ({ Transitions }) => {
   return {
     loaded: Transitions.loaded
