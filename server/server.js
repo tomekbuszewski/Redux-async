@@ -122,15 +122,19 @@ const makeResponse = (entry, data, res, status = 200) => {
   res.send(build(HELMET, BUILD, STORE.getState()));
 };
 
-app.use(require('webpack-dev-middleware')(compiler, {
-  publicPath: '/public/'
-}));
+if (process.env.NODE_ENV === 'development') {
+  /** HMR Start */
+  app.use(require('webpack-dev-middleware')(compiler, {
+    publicPath: '/public/'
+  }));
 
-app.use(require('webpack-hot-middleware')(compiler));
+  app.use(require('webpack-hot-middleware')(compiler));
+  app.get(/.*.json/, (req, res) => { res.sendFile(path.join(__dirname, '..', req.url)) });
+  /** HMR End */
+}
 
 app.use(compression());
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
-app.get(/.*.json/, (req, res) => { res.sendFile(path.join(__dirname, '..', req.url)) });
 
 app.get('/api/cache/clear/:target?', (req, res) => {
   const target = typeof req.params.target === 'undefined' ? '/' : req.params.target;
