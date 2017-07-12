@@ -11,9 +11,9 @@ const Nav = () => <div className={style.nav}>
   <Search />
   <div className="container">
     <div className="nav-left">
-      <Link classname="nav-item is-tab" href="/">Strona główna</Link>
-      <Link classname="nav-item is-tab" href="/category/edge-case-2">Kategoria</Link>
-      <Link classname="nav-item is-tab" href="/tag/alignment-2">Tag</Link>
+      <Link classname={style['nav-button']} href="/">Strona główna</Link>
+      <Link classname={style['nav-button']} href="/category/edge-case-2">Kategoria</Link>
+      <Link classname={style['nav-button']} href="/tag/alignment-2">Tag</Link>
     </div>
   </div>
 </div>;

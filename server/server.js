@@ -1,5 +1,6 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import webpack from 'webpack';
 import express from 'express';
 import axios from 'axios';
 import serialize from 'serialize-javascript';
@@ -11,6 +12,8 @@ import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
 
+import config from '../webpack.config.dev';
+
 import expect from '../source/js/Services/Expect';
 import { getPagination, lastSlash } from '../source/js/Services/UrlParser';
 
@@ -19,6 +22,7 @@ import { makeStore } from '../source/js/Utils/store';
 import App from '../source/js/Components/App';
 
 const app = express();
+const compiler = webpack(config);
 const PORT = 1199;
 const CACHE_TIME = '10 minutes';
 const COLLECTION = 'COLLECTION';
@@ -118,8 +122,15 @@ const makeResponse = (entry, data, res, status = 200) => {
   res.send(build(HELMET, BUILD, STORE.getState()));
 };
 
+app.use(require('webpack-dev-middleware')(compiler, {
+  publicPath: '/public/'
+}));
+
+app.use(require('webpack-hot-middleware')(compiler));
+
 app.use(compression());
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
+app.get(/.*.json/, (req, res) => { res.sendFile(path.join(__dirname, '..', req.url)) });
 
 app.get('/api/cache/clear/:target?', (req, res) => {
   const target = typeof req.params.target === 'undefined' ? '/' : req.params.target;
@@ -151,6 +162,10 @@ app.get('/api/*', CACHE(CACHE_TIME), (req, res) => {
 app.get('/*', CACHE(CACHE_TIME), (req, res) => {
   const ENTRY_POINT = req.url;
   const URL = `${API_URL}${ENTRY_POINT}`;
+
+  if (ENTRY_POINT.indexOf('hot-update.json') > -1) {
+    res.sendFile(ENTRY_POINT);
+  }
 
   axios.get(URL).then(r => {
     makeResponse(ENTRY_POINT, r.data, res);

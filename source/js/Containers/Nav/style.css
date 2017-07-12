@@ -1,1 +1,4 @@
 .nav { position: relative }
+.nav-button {
+    font-weight: bold;
+}
