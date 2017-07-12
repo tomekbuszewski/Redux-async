@@ -10,10 +10,10 @@ const Nav = () => <div className={style.nav}>
   <ProgressBar />
   <Search />
   <div className="container">
-    <div className="nav-left">
-      <Link classname="nav-item is-tab" href="/">Strona główna</Link>
-      <Link classname="nav-item is-tab" href="/category/edge-case-2">Kategoria</Link>
-      <Link classname="nav-item is-tab" href="/tag/alignment-2">Tag</Link>
+    <div className={style.Wrapper}>
+      <Link classname={style.Item} href="/">Strona główna</Link>
+      <Link classname={style.Item} href="/category/edge-case-2">Kategoria</Link>
+      <Link classname={style.Item} href="/tag/alignment-2">Tag</Link>
     </div>
   </div>
 </div>;

@@ -1,12 +1,23 @@
 import React from 'react';
 import worker from './registerServiceWorker';
-import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { render as reactRender } from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
 
-import store from './Utils/store';
+import Routing from './Containers/Routing';
 
-import App from './Components/App';
+const rootEl = document.getElementById('root');
+const render = Component =>
+  reactRender(
+    <AppContainer>
+      <Component />
+    </AppContainer>,
+    rootEl
+  );
 
-render(<Router><Provider store={store}><App /></Provider></Router>, document.getElementById('root'));
+render(Routing);
+
+if (module.hot) {
+  module.hot.accept();
+}
+
 worker();

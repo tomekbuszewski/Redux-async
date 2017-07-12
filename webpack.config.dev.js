@@ -1,28 +1,29 @@
 var path = require('path');
-var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-
-var browserSync = new BrowserSyncPlugin({
-  proxy: {
-    target: "http://localhost:1199",
-    ws: true
-  }
-});
+var webpack = require('webpack');
 
 module.exports = {
-  devtool: 'source-map',
-  entry: './source/index.js',
+  devtool: 'none',
+  entry: [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:3000',
+    'webpack/hot/only-dev-server',
+    './source/index.js'
+  ],
   output: {
     filename: 'index.js',
-    path: path.resolve(__dirname, 'public')
+    publicPath: 'http://localhost:3000/',
+    path: path.resolve(__dirname, 'public'),
+    hotUpdateChunkFilename: 'hot/hot-update.js',
+    hotUpdateMainFilename: 'hot/hot-update.json'
   },
   module: {
     rules: [
       { // CSS
-        test: /\.|css$/,
-        exclude: [/node_modules/],
+        test: /\.css$/,
         use: [
           { loader: 'style-loader' },
           { loader: 'css-loader', options: { modules: true, localIdentName: '[path][name]_[local]--[hash:base64:8]' } },
+          { loader: 'postcss-loader' },
           { loader: 'resolve-url-loader' },
         ]
       },
@@ -39,6 +40,25 @@ module.exports = {
     ]
   },
   plugins: [
-    browserSync
-  ]
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development')
+      }
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+  ],
+  devServer: {
+    host: 'localhost',
+    port: 3000,
+    contentBase: 'public/',
+    historyApiFallback: true,
+    hot: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+    }
+  }
 };
