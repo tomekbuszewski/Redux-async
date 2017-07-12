@@ -58,7 +58,7 @@
   "scripts": {
     "push": "ssh buszewski@s15.mydevil.net 'cd domains/test.buszewski.usermd.net/public_nodejs && git pull && npm install && npm run prod'",
     "dev": "concurrently \"yarn serve\" \"yarn hmr\"",
-    "serve": "nodemon --watch server server",
+    "serve": "NODE_ENV=development nodemon --watch server server",
     "build": "webpack --config webpack.config.dev.js",
     "prod": "webpack -p --config webpack.config.prod.js",
     "hmr": "webpack-dev-server --config webpack.config.dev.js",

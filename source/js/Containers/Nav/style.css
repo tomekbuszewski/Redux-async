@@ -1,4 +1,14 @@
 .nav { position: relative }
-.nav-button {
-    font-weight: bold;
+
+.Wrapper {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.Item {
+  padding: 0 10px;
+}
+
+.Item:first-of-type {
+  padding-left: 0;
 }
