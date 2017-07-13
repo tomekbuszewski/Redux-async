@@ -1,14 +1,1 @@
 .nav { position: relative }
-
-.Wrapper {
-  display: flex;
-  flex-flow: row wrap;
-}
-
-.Item {
-  padding: 0 10px;
-}
-
-.Item:first-of-type {
-  padding-left: 0;
-}

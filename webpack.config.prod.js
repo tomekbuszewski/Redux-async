@@ -1,6 +1,6 @@
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+var webpack = require('webpack');
 var extractScss = new ExtractTextPlugin({ filename: '[name].css' });
 
 module.exports = {
@@ -13,12 +13,12 @@ module.exports = {
   module: {
     rules: [
       { // CSS
-        test: /\.css$/,
+        test: /\.css$|scss$/,
         use: extractScss.extract({
           use: [
             { loader: 'css-loader', options: { modules: true, localIdentName: '[path][name]_[local]--[hash:base64:8]' } },
             { loader: 'postcss-loader' },
-            { loader: 'resolve-url-loader' },
+            { loader: 'sass-loader', options: { sourceMap: true, includePaths: ['./source/sass'] }},
           ]
         })
       },

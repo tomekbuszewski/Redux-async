@@ -19,12 +19,13 @@ module.exports = {
   module: {
     rules: [
       { // CSS
-        test: /\.css$/,
+        test: /\.css$|scss$/,
         use: [
           { loader: 'style-loader' },
           { loader: 'css-loader', options: { modules: true, localIdentName: '[path][name]_[local]--[hash:base64:8]' } },
           { loader: 'postcss-loader' },
-          { loader: 'resolve-url-loader' },
+          { loader: 'sass-loader', options: { includePaths: [path.resolve(__dirname, 'source', 'sass')] }},
+          { loader: 'resolve-url-loader' }
         ]
       },
       { // JavaScript
@@ -39,6 +40,11 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    alias: {
+      styles: path.join(__dirname, 'source/sass')
+    }
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
@@ -47,7 +53,6 @@ module.exports = {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
   ],
   devServer: {
     host: 'localhost',

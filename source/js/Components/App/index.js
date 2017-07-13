@@ -8,8 +8,9 @@ import Section from '../../Containers/Section';
 
 import Routes from '../Routes';
 import Error from '../../Containers/Error';
+import Container from '../../Containers/PageContainer';
 
-const App = ({ loaded, status }) => {
+const App = ({ status }) => {
   return (
     <div>
       <Helmet>
@@ -18,18 +19,15 @@ const App = ({ loaded, status }) => {
         {status !== 200 && <title>Błąd</title>}
       </Helmet>
       <Nav />
-      <div className={`wrapper ${loaded.loaded ? 'loaded' : 'loading'}`}>
-        <Section>
-          {status !== 200 ? <Error /> : <Routes />}
-        </Section>
-      </div>
+      <Container>
+        {status !== 200 ? <Error /> : <Routes />}
+      </Container>
     </div>
   );
 };
 
 const mapStateToProps = ({ Transitions }) => {
   return {
-    loaded: Transitions,
     status: Transitions.status
   }
 };

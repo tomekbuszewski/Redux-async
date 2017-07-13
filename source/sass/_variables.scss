@@ -1,0 +1,43 @@
+/**
+  Variables
+ */
+// Typography
+$font-primary:                        'Helvetica', 'Arial', sans-serif;
+$font-secondary:                      'Georgia', serif;
+
+$font-base-size:                      12px;
+$font-base-line-height:               1.5;
+
+// Colors
+$color-brand:                         #3D94C9;
+
+// Measures
+$paddings:                            (
+  xs:                                   4px,
+  sm:                                   6px,
+  md:                                   8px,
+  lg:                                   10px,
+  xl:                                   12px
+);
+
+// Breakpoints:
+$breakpoints:                         (
+  mobile-vertical:                      480px,
+  mobile-horizontal:                    320px,
+  tablet-vertical:                      768px,
+  tablet-horizontal:                    1024px,
+  display-normal:                       1280px,
+  display-large:                        1680px,
+  display-xlarge:                       1920px
+);
+
+// Containers
+$containers:                          (
+  mobile-vertical:                      100%,
+  mobile-horizontal:                    100%,
+  tablet-vertical:                      100%,
+  tablet-horizontal:                    100%,
+  display-normal:                       1260px,
+  display-large:                        1260px,
+  display-xlarge:                       1260px
+);
