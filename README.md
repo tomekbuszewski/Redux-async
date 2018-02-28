@@ -1,3 +1,12 @@
-# Starter Kit
+# Redux-async
 
-Use `yarn watch` to run BrowserSync and watch changes. `yarn build` to build development version and `yarn prod` for production one.
+## Start
+To build an app (required step):
+```bash
+§ yarn prod
+```
+
+Development mode:
+```bash
+§ yarn dev
+```

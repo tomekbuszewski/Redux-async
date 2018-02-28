@@ -1,0 +1,13 @@
+@import '../../../sass/variables';
+@import '../../../sass/utilities/media-query';
+
+.container {
+  margin: auto;
+  width: 100%;
+
+  @each $bp, $val in $breakpoints {
+    @include bp(map_get($breakpoints, $bp)) {
+      max-width: map_get($containers, $bp);
+    }
+  }
+}

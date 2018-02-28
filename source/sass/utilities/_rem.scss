@@ -1,0 +1,10 @@
+/**
+ * @section Mixins
+ * @param $pixels Font size in px
+ * @example
+ *   @include rem(12px);
+ */
+
+@function rem($pixels, $context: $font-base-size) {
+  @return #{$pixels/$context}rem;
+}

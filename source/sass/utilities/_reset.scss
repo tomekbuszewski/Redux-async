@@ -1,0 +1,14 @@
+/**
+ * @section Utils
+ * Reset
+ */
+
+*, * > * {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: $font-base-size;
+  line-height: $font-base-line-height;
+}

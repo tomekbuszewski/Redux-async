@@ -1,0 +1,5 @@
+@function vr($pixels, $lh: $font-base-line-height, $fs: $font-base-size) {
+  $line-height: $fs * $lh;
+
+  @return #{strip-units($line-height / $pixels)}em;
+}

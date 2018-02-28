@@ -1,0 +1,7 @@
+@mixin bp($query) {
+  @media (min-width: $query) { @content }
+}
+
+@mixin bp-only($from, $to) {
+  @media (min-width: map_get($breakpoints, $from)) and (max-width: map_get($breakpoints, $to) - 1) { @content }
+}
