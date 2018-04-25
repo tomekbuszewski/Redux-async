@@ -155,7 +155,7 @@ app.get('/api/*', CACHE(CACHE_TIME), (req, res) => {
     }})
   }).catch(() => {
     res.format({'application/json': () => {
-      res.status(200).json(JSON.stringify({error: 404}));
+      res.status(404).json(JSON.stringify({error: 404}));
     }})
   });
 });
